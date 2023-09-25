@@ -1,0 +1,769 @@
+<!DOCTYPE HTML>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8">
+	<title>FME Controller</title>
+	<style>
+		.tab {
+			overflow: hidden;
+			border: 1px solid #ccc;
+			background-color: #f1f1f1;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.tab button {
+			background-color: inherit;
+			float: left;
+			border: none;
+			outline: none;
+			cursor: pointer;
+			padding: 14px 16px;
+			transition: 0.3s;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.tab button:hover {
+			background-color: #ddd;
+		}
+
+		.tab button.active {
+			background-color: #ccc;
+		}
+
+		.tabcontent {
+			display: none;
+			padding: 6px 12px;
+			border: 1px solid #ccc;
+			border-top: none;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		fieldset p {
+			clear: both;
+			padding: 5px;
+		}
+
+		.button {
+			margin-right: 20px;
+		}
+
+		label.field {
+			text-align: left;
+			height: 24px;
+			width: 120px;
+			float: left;
+		}
+
+		img.layout {
+			float: left;
+			padding-left: 5px;
+		}
+
+		checkbox.layout {
+			width: 300px;
+			float: left;
+		}
+
+		input.layout {
+			width: 300px;
+			float: left;
+		}
+
+		number.layout {
+			width: 300px;
+			float: left;
+		}
+
+		select.layout {
+			height: 24px;
+			width: 300px;
+			float: left;
+		}
+
+		table.grayTable {
+			border: 1px solid #444444;
+			background-color: #F8F8F8;
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		table.grayTable td,
+		table.grayTable th {
+			border: 1px solid #CCCCCC;
+			padding: 3px 2px;
+		}
+
+		table.grayTable tr:nth-child(even) {
+			background: #FFFFFF;
+		}
+
+		table.grayTable thead {
+			background: #DDDDDD;
+			background: -moz-linear-gradient(top, #e5e5e5 0%, #e0e0e0 66%, #DDDDDD 100%);
+			background: -webkit-linear-gradient(top, #e5e5e5 0%, #e0e0e0 66%, #DDDDDD 100%);
+			background: linear-gradient(to bottom, #e5e5e5 0%, #e0e0e0 66%, #DDDDDD 100%);
+			border-bottom: 2px solid #444444;
+		}
+
+		table.grayTable thead th {
+			font-weight: normal;
+			border-left: 2px solid #444444;
+		}
+
+		table.grayTable thead th:first-child {
+			border-left: none;
+		}
+	</style>
+	<script src="js/jquery.js"></script>
+	<script src="js/adresse.js"></script>
+	<script src="js/einstellungen.js"></script>
+	<script src="js/alarm.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			var myItems;
+
+			$.getJSON('configuration.json', function (data) {
+				myItems = data.items;
+				console.log(myItems);
+			});
+		});
+	</script>
+	<script>
+		function openTab(evt, tabName) {
+			var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(tabName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+	</script>
+	<script>
+		function loadFMEList() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("insertFMEList").innerHTML = this.responseText;
+				}
+			};
+			xhttp.open("GET", "http://controller/getFMEList", true);
+			xhttp.send();
+			setTimeout(loadFMEList, 10000);
+		}
+	</script>
+	<script>
+		function saveAlarmToCard() {
+			var currentType = document.getElementById('currentType').value;
+			var currentSub = document.getElementById('currentSub').value;
+			var currentPLZ = document.getElementById('currentPLZ').value;
+			var currentCity = document.getElementById('currentCity').value;
+			var currentStreet = document.getElementById('currentStreet').value;
+			var currentHouseNumber = document.getElementById('currentHouseNumber').value;
+			var currentHouseAdddition = document.getElementById('currentHouseAdddition').value;
+			var currentAddress = document.getElementById('currentAddress').value;
+			var currentComment = document.getElementById('currentComment').value;
+			var link = 'http://controller/saveAlarm?currentType=' + currentType + 'currentSub=' + currentSub + 'currentPLZ=' + currentPLZ + 'currentCity=' + currentCity + 'currentStreet=' + currentStreet + 'currentHouseNumber=' + currentHouseNumber + 'currentHouseAddition=' + currentHouseAddition + '&currentAddress=' + currentAddress + '&currentComment=' + currentComment + '&nodeId=' + nodeId;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+				}
+			};
+			xhttp.open("GET", link, true);
+			xhttp.send();
+		}
+	</script>
+	<script>
+		function sendAlarm() {
+			var currentType = document.getElementById('currentType').value;
+			var currentSub = document.getElementById('currentSub').value;
+			var currentPLZ = document.getElementById('currentPLZ').value;
+			var currentCity = document.getElementById('currentCity').value;
+			var currentStreet = document.getElementById('currentStreet').value;
+			var currentHouseNumber = document.getElementById('currentHouseNumber').value;
+			var currentHouseAdddition = document.getElementById('currentHouseAdddition').value;
+			var currentAddress = document.getElementById('currentAddress').value;
+			var currentComment = document.getElementById('currentComment').value;
+			var link = 'http://controller/sendAlarm?currentType=' + currentType + 'currentSub=' + currentSub + 'currentPLZ=' + currentPLZ + 'currentCity=' + currentCity + 'currentStreet=' + currentStreet + 'currentHouseNumber=' + currentHouseNumber + 'currentHouseAddition=' + currentHouseAddition + '&currentAddress=' + currentAddress + '&currentComment=' + currentComment + '&nodeId=' + nodeId;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+				}
+			};
+			xhttp.open("GET", link, true);
+			xhttp.send();
+		}
+	</script>
+</head>
+
+<body>
+	<div class="tab">
+		<button class="tablinks" onclick="openTab(event, 'StatusD')">Status</button>
+		<button class="tablinks" onclick="openTab(event, 'AlarmD')">Alarm</button>
+		<button class="tablinks" onclick="openTab(event, 'EinstellungenD')">Einstellungen</button>
+	</div>
+	<div id="StatusD" class="tabcontent">
+		<table class="grayTable">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Rolle</th>
+					<th>Status</th>
+					<th>Befehle</th>
+				</tr>
+			</thead>
+			<tbody id="insertFMEList">
+				<!--Das ist nur für Testzwecke alles zwischen <tbody id="insertFMEList"> und </tbody> muss entfernt werden-->
+				<tr>
+					<td>123456789</td>
+					<td>
+						<img class="layout" src="img/c_Device_Controller.jpg" alt="Controller" title="Controller"
+							display="inline-block" name="statusImage" /></img>
+					</td>
+					<td>
+						<img class="layout" src="img/c_Status_On.jpg" alt="Online" title="Online" display="inline-block"
+							name="statusImage" /></img>
+						<img class="layout" src="img/c_BatCharge_24.jpg" alt="100%" title="100%" display="inline-block"
+							name="battImage" /></img>
+					</td>
+					<td>
+						<button type="button" onclick=resetFME(123456789)>Neustart</button>
+					</td>
+				</tr>
+				<tr>
+					<td>987654321</td>
+					<td>
+						<img class="layout" src="img/c_Device_Bridge.jpg" alt="Bridge" title="Bridge"
+							display="inline-block" name="statusImage" /></img>
+					</td>
+					<td>
+						<img class="layout" src="img/c_Status_On.jpg" alt="Online" title="Online" display="inline-block"
+							name="statusImage" /></img>
+						<img class="layout" src="img/c_Bat100_24.jpg" alt="100%" title="100%" display="inline-block"
+							name="battImage" /></img>
+					</td>
+					<td>
+						<button type="button" onclick=resetFME(987654321)>Neustart</button>
+					</td>
+				</tr>
+				<tr>
+					<td>987654321</td>
+					<td>
+						<img class="layout" src="img/c_Device_FME.jpg" alt="Client" title="Client"
+							display="inline-block" name="statusImage" /></img>
+					</td>
+					<td>
+						<img class="layout" src="img/c_Status_On.jpg" alt="Online" title="Online" display="inline-block"
+							name="statusImage" /></img>
+						<img class="layout" src="img/c_Bat100_24.jpg" alt="100%" title="100%" display="inline-block"
+							name="battImage" /></img>
+					</td>
+					<td>
+						<button type="button" onclick=resetFME(987654321)>Neustart</button>
+						<button type="button" onclick=sendSingle(987654321)>Alarmieren</button>
+					</td>
+				</tr>
+				<tr>
+					<td>987654321</td>
+					<td>
+						<img class="layout" src="img/c_Device_FME.jpg" alt="Client" title="Client"
+							display="inline-block" name="statusImage" /></img>
+					</td>
+					<td>
+						<img class="layout" src="img/c_Status_Off.jpg" alt="Offline" title="Offline"
+							display="inline-block" name="statusImage" /></img>
+						<img class="layout" src="img/c_Bat000_24.jpg" alt="0%" title="0%" display="inline-block"
+							name="battImage" /></img>
+					</td>
+					<td>
+						<button type="button" disabled="disabled" onclick=resetFME(987654321)>Neustart</button>
+						<button type="button" disabled="disabled" onclick=sendSingle(987654321)>Alarmieren</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			<button type="button" onclick="loadFMEList()">Aktualisieren</button>
+		</p>
+	</div>
+	<div id="AlarmD" class="tabcontent">
+		<form id="alarm" action="sendAlarm" target="hidden">
+			<fieldset>
+				<legend>Alarm</legend>
+				<p>
+					<label class="field" for="currentType">Stichwort:</label>
+					<select class="layout" id="currentType" name="currentType" required>
+						<optgroup label="Feuer">
+							<option value=101>F 1</option>
+							<option value=102>F 2</option>
+							<option value=103>F 2 Y</option>
+							<option value=104>F 3</option>
+							<option value=105>F 3 Y</option>
+							<option value=106>F 4</option>
+							<option value=107>F BMA</option>
+							<option value=108>F BUS Y</option>
+							<option value=109>F FLUG 1 Y</option>
+							<option value=110>F FLUG 2 Y</option>
+							<option value=111>F GAS 1</option>
+							<option value=112>F GAS 2</option>
+							<option value=113>F LKW</option>
+							<option value=114>F ZUG</option>
+							<option value=115>F ZUG Y</option>
+							<option value=116>F RWM</option>
+							<option value=117>F SCHIFF 1</option>
+							<option value=118>F SCHIFF 2</option>
+							<option value=119>F SCHIFF 2 Y</option>
+							<option value=120>F SCHIFF 2 GEFAHR</option>
+							<option value=121>F WALD 1</option>
+							<option value=122>F WALD 2</option>
+						</optgroup>
+						<optgroup label="Hilfeleistung">
+							<option value=201>H 1</option>
+							<option value=202>H 1 Y</option>
+							<option value=203>H 2</option>
+							<option value=204>H ABST Y</option>
+							<option value=205>H ELEK</option>
+							<option value=206>H EINST Y</option>
+							<option value=207>H FLUSS</option>
+							<option value=208>H FLUSS Y</option>
+							<option value=209>H WASS Y</option>
+							<option value=210>H GAS 1</option>
+							<option value=211>H GAS 2</option>
+							<option value=212>H GEFAHR 1</option>
+							<option value=213>H GEFAHR 2</option>
+							<option value=214>H KLEMM 1 Y</option>
+							<option value=215>H KLEMM 2 Y</option>
+							<option value=216>H ÖL FLUSS</option>
+							<option value=217>H ÖL WASS</option>
+							<option value=218>H RADIOAKTIV</option>
+							<option value=219>H SCHIFF</option>
+							<option value=220>H SCHIFF Y</option>
+							<option value=221>H ZUG 1 Y</option>
+							<option value=222>H ZUG 2 Y</option>
+						</optgroup>
+						<optgroup label="Unwetter">
+							<option value=301>U Unwetter Sturm</option>
+							<option value=302>U Unwetter Wasser</option>
+						</optgroup>
+						<optgroup label="Rettungsdienst">
+							<option value=401>K</option>
+							<option value=402>R 0 K</option>
+							<option value=403>R 0</option>
+							<option value=404>R 1</option>
+							<option value=405>R 2</option>
+							<option value=406>R 3</option>
+							<option value=407>R LEBEL</option>
+							<option value=408>R MANV</option>
+						</optgroup>
+						<optgroup label="THW">
+							<option value=501>THW</option>
+							<option value=502>THW SEG</option>
+							<option value=503>THW FB</option>
+							<option value=504>THW BEL</option>
+							<option value=505>THW BRB</option>
+							<option value=506>THW E</option>
+							<option value=507>THW FK</option>
+							<option value=508>THW WV</option>
+							<option value=509>THW HÖRG</option>
+							<option value=510>THW I</option>
+							<option value=511>THW LOG V</option>
+							<option value=512>THW LOG M</option>
+							<option value=513>THW ORT</option>
+							<option value=514>THW ÖL</option>
+							<option value=515>THW R</option>
+							<option value=516>THW TW</option>
+							<option value=517>THW SPR</option>
+							<option value=518>THW WASSER</option>
+							<option value=519>THW WP</option>
+							<option value=520>THW EGS</option>
+							<option value=521>THW ASH</option>
+						</optgroup>
+						<optgroup label="Polizei">
+							<option value=601>P BR</option>
+							<option value=602>P BOMBE</option>
+							<option value=603>P USBV</option>
+							<option value=604>P GEISEL</option>
+							<option value=605>P SEK</option>
+							<option value=606>P LEBEL</option>
+						</optgroup>
+						<optgroup label="Sonstiges">
+							<option value=0>UNKLAR</option>
+							<option value=1>FME Test</option>
+						</optgroup>
+					</select>
+					<img class="layout" src="img/c_Type_F001_24.jpg" display="inline-block" name="typeImage" /></img>
+				</p>
+				<p>
+					<label class="field" for="currentSub">Unterpunkt:</label>
+					<select class="layout" id="currentSub" name="currentSub" required></select>
+				</p>
+			</fieldset>
+			<fieldset>
+				<legend>Adresse</legend>
+				<p>
+					<label class="field" for="currentPLZ">PLZ:</label>
+					<select class="layout" id="currentPLZ" name="currentPLZ" required>
+						<option value=0></option>
+						<optgroup label="Allendorf (Lumda)">
+							<option value=22>35469</option>
+						</optgroup>
+						<optgroup label="Biebertal">
+							<option value=15>35444</option>
+						</optgroup>
+						<optgroup label="Buseck">
+							<option value=10>35418</option>
+						</optgroup>
+						<optgroup label="Fernwald">
+							<option value=20>35463</option>
+						</optgroup>
+						<optgroup label="Gießen">
+							<option value=3>35390</option>
+							<option value=4>35392</option>
+							<option value=5>35394</option>
+							<option value=6>35396</option>
+							<option value=7>35398</option>
+						</optgroup>
+						<optgroup label="Grünberg">
+							<option value=1>35305</option>
+						</optgroup>
+						<optgroup label="Heuchelheim an der Lahn">
+							<option value=17>35452</option>
+						</optgroup>
+						<optgroup label="Hungen">
+							<option value=8>35410</option>
+						</optgroup>
+						<optgroup label="Langgöns">
+							<option value=12>35428</option>
+						</optgroup>
+						<optgroup label="Laubach">
+							<option value=2>35321</option>
+						</optgroup>
+						<optgroup label="Lich">
+							<option value=11>35423</option>
+						</optgroup>
+						<optgroup label="Linden">
+							<option value=14>35440</option>
+						</optgroup>
+						<optgroup label="Lollar">
+							<option value=18>35457</option>
+						</optgroup>
+						<optgroup label="Pohlheim">
+							<option value=9>35415</option>
+						</optgroup>
+						<optgroup label="Rabenau">
+							<option value=21>35466</option>
+						</optgroup>
+						<optgroup label="Reiskirchen">
+							<option value=16>35447</option>
+						</optgroup>
+						<optgroup label="Staufenberg">
+							<option value=19>35460</option>
+						</optgroup>
+						<optgroup label="Wettenberg">
+							<option value=13>35435</option>
+						</optgroup>
+					</select>
+					<img class="layout" src="img/c_Coat_000_24.jpg" display="inline-block" name="cityImage" /></img>
+				</p>
+				<p>
+					<label class="field" for="currentCity">Ort:</label>
+					<select class="layout" id="currentCity" name="currentCity" required></select>
+				</p>
+				<p>
+					<label class="field" for="currentStreet">Straße:</label>
+					<select class="layout" id="currentStreet" name="currentStreet" required></select>
+				</p>
+				<p>
+					<label class="field" for="currentHouseNumber">Hausnummer:</label>
+					<input class="layout" type="number" id="currentHouseNumber" name="currentHouseNumber" min="1"
+						max="999" value="1" /></input>
+				</p>
+				<p>
+					<label class="field" for="currentHouseAdddition">Zusatz:</label>
+					<input class="layout" type="text" id="currentHouseAdddition" name="currentHouseAdddition"
+						pattern="[A-Za-z]{0,3}" /></input>
+				</p>
+				<p hidden>
+					<label class="field" for="currentAddress">Freie Adresse:</label>
+					<input class="layout" type='text' id='currentAddress' name='currentAddress' /></input>
+				</p>
+			</fieldset>
+			<fieldset>
+				<legend>Sonstiges</legend>
+				<p>
+					<label class="field" for="currentComment">Kommentar:</label>
+					<input class="layout" type='text' id='currentComment' name='currentComment' /></input>
+				</p>
+			</fieldset>
+			<p>
+				<input class="button" type="submit" value="Alarmieren"></input>
+				<button type="button" class="button" onclick="readAlarmFromCard()">Karte Lesen</button>
+				<button type="button" class="button" onclick="saveAlarmToCard()">Karte Speichern</button>
+			</p>
+		</form>
+	</div>
+	<div id="EinstellungenD" class="tabcontent">
+		<form id="einstellungen" action="send" target="hidden">
+			<fieldset>
+				<legend>Display</legend>
+				<p style="display:none;">
+					<label class="field" id="timePage1Label" for="timePage1">Dauer Seite 1:</label>
+					<input class="layout" type="number" id="timePage1" name="timePage1" min="1000" max="60000"
+						value="20000" /></input>
+				</p>
+				<p style="display:none;">
+					<label class="field" id="timePage1Labe2" for="timePage2">Dauer Seite 2:</label>
+					<input class="layout" type="number" id="timePage1" name="timePage2" min="1000" max="60000"
+						value="20000" /></input>
+				</p>
+				<p style="display:none;">
+					<label class="field" id="timePage1Labe3" for="timePage3">Dauer Seite 3:</label>
+					<input class="layout" type="number" id="timePage3" name="timePage3" min="1000" max="60000"
+						value="20000" /></input>
+				</p>
+				<p>
+					<label class="field" for="isLandscape">Landscape:</label>
+					<input class="layout" type="checkbox" id="isLandscape" name="isLandscape" checked /></input>
+				</p>
+				<p>
+					<label class="field" for="showTime">Uhr anzeigen:</label>
+					<input class="layout" type="checkbox" id="showTime" name="showTime" checked /></input>
+				</p>
+				<p>
+					<label class="field" for="currentTheme">Theme:</label>
+					<select class="layout" id="currentTheme" name="currentTheme" required>
+						<option value="color">Farbe</option>
+						<option value="blackwhite">Schwarz/Weiß</option>
+						<option value="outline">Outline</option>
+					</select>
+					<img class="layout" src="img/Theme_24.jpg" display="inline-block" name="themeImage" /></img>
+				</p>
+				<p>
+					<label class="field" id="brightnessLabel" for="toneAnalog">Helligkeit:</label>
+					<input class="layout" type="number" id="brightness" name="brightness" min="10" max="100"
+						value="100" /></input>
+				</p>
+			</fieldset>
+			<fieldset>
+				<legend>Sound</legend>
+				<p>
+					<label class="field" for="isDigital">Digitaler Ton:</label>
+					<input class="layout" type="checkbox" id="isDigital" name="isDigital" checked /></input>
+				</p>
+				<p>
+					<label class="field" for="menueSound">Tastentöne:</label>
+					<input class="layout" type="checkbox" id="menueSound" name="menueSound" checked /></input>
+				</p>
+				<p>
+					<label class="field" id="toneDigitalLabel" for="toneDigital">Digital Ton:</label>
+					<input class="layout" type="number" id="toneDigital" name="toneDigital" min="1" max="54"
+						value="16" /></input>
+				</p>
+				<p>
+					<label class="field" id="toneAnalogLabel" for="toneAnalog">Analog Ton:</label>
+					<input class="layout" type="number" id="toneAnalog" name="toneAnalog" min="10000" max="99999"
+						value="52112" /></input>
+				</p>
+				<input type="hidden" id="nodeId" name="nodeId" value="0" /></input>
+			</fieldset>
+			<fieldset>
+				<legend>Sonstiges</legend>
+				<p>
+					<label class="field" for="currentLang">Sprache:</label>
+					<select class="layout" id="currentLang" name="currentLang" required>
+						<option value="de">Deutsch</option>
+						<option value="en">Englisch</option>
+					</select>
+					<img class="layout" src="img/c_LangDE_24.jpg" display="inline-block" name="languageImage" /></img>
+				</p>
+				<p>
+					<label class="field" for="currentPlace">Standort:</label>
+					<select class="layout" id="currentPlace" name="currentPlace" required>
+						<optgroup label="Allendorf (Lumda)">
+							<option value=3>Allendorf (Lumda)</option>
+							<option value=18>Climbach</option>
+							<option value=76>Nordeck</option>
+						</optgroup>
+						<optgroup label="Biebertal">
+							<option value=25>Fellingshausen</option>
+							<option value=27>Frankenbach</option>
+							<option value=51>Königsberg</option>
+							<option value=53>Krumbach</option>
+							<option value=89>Rodheim-Bieber</option>
+							<option value=107>Vetzberg</option>
+						</optgroup>
+						<optgroup label="Buseck">
+							<option value=5>Alten-Buseck</option>
+							<option value=12>Beuern</option>
+							<option value=34>Großen-Buseck</option>
+							<option value=82>Oppenrod</option>
+							<option value=106>Trohe</option>
+						</optgroup>
+						<optgroup label="Fernwald">
+							<option value=1>Albach</option>
+							<option value=7>Annerod</option>
+							<option value=101>Steinbach</option>
+						</optgroup>
+						<optgroup label="Gießen">
+							<option value=2>Allendorf</option>
+							<option value=31>Gießen</option>
+							<option value=49>Kleinlinden</option>
+							<option value=68>Lützellinden</option>
+							<option value=91>Rödgen</option>
+							<option value=113>Wieseck</option>
+						</optgroup>
+						<optgroup label="Grünberg">
+							<option value=9>Beltershain</option>
+							<option value=32>Göbelnrod</option>
+							<option value=36>Grünberg</option>
+							<option value=38>Harbach</option>
+							<option value=48>Klein-Eichen</option>
+							<option value=57>Lardenbach</option>
+							<option value=61>Lehnheim</option>
+							<option value=69>Lumda</option>
+							<option value=84>Queckborn</option>
+							<option value=87>Reinhardshain</option>
+							<option value=98>Seenbrücke</option>
+							<option value=99>Stangenrod</option>
+							<option value=103>Stockhausen</option>
+							<option value=109>Weickartshain</option>
+							<option value=110>Weitershain</option>
+						</optgroup>
+						<optgroup label="Heuchelheim an der Lahn">
+							<option value=42>Heuchelheim</option>
+							<option value=47>Kinzenbach</option>
+						</optgroup>
+						<optgroup label="Hungen">
+							<option value=8>Bellersheim</option>
+							<option value=44>Hungen</option>
+							<option value=45>Inheiden</option>
+							<option value=54>Langd</option>
+							<option value=75>Nonnenroth</option>
+							<option value=77>Obbornhofen</option>
+							<option value=86>Rabertshausen</option>
+							<option value=90>Rodheim</option>
+							<option value=102>Steinheim</option>
+							<option value=104>Trais-Horloff</option>
+						</optgroup>
+						<optgroup label="Langgöns">
+							<option value=17>Cleeberg</option>
+							<option value=21>Dornholzhausen</option>
+							<option value=23>Espa</option>
+							<option value=55>Langgöns</option>
+							<option value=74>Niederkleen</option>
+							<option value=79>Oberkleen</option>
+						</optgroup>
+						<optgroup label="Laubach">
+							<option value=6>Altenhain</option>
+							<option value=28>Freienseen</option>
+							<option value=33>Gonterskirchen</option>
+							<option value=58>Laubach</option>
+							<option value=60>Lauter</option>
+							<option value=71>Münster</option>
+							<option value=92>Röthges</option>
+							<option value=94>Ruppertsburg</option>
+							<option value=112>Wetterfeld</option>
+						</optgroup>
+						<optgroup label="Lich">
+							<option value=11>Bettenhausen</option>
+							<option value=14>Birklar</option>
+							<option value=22>Eberstadt</option>
+							<option value=50>Kloster Arnsburg</option>
+							<option value=56>Langsdorf</option>
+							<option value=63>Lich</option>
+							<option value=72>Muschenheim</option>
+							<option value=73>Nieder-Bessingen</option>
+							<option value=78>Ober-Bessingen</option>
+						</optgroup>
+						<optgroup label="Linden">
+							<option value=35>Großen-Linden</option>
+							<option value=62>Leihgestern</option>
+						</optgroup>
+						<optgroup label="Lollar">
+							<option value=66>Lollar</option>
+							<option value=80>Odenhausen</option>
+							<option value=95>Ruttershausen</option>
+							<option value=97>Salzböden</option>
+						</optgroup>
+						<optgroup label="Pohlheim">
+							<option value=20>Dorf-Güll</option>
+							<option value=29>Garbenteich</option>
+							<option value=37>Grüningen</option>
+							<option value=40>Hausen</option>
+							<option value=43>Holzheim</option>
+							<option value=108>Watzenborn-Steinberg</option>
+						</optgroup>
+						<optgroup label="Rabenau">
+							<option value=4>Allertshausen</option>
+							<option value=30>Geilshausen</option>
+							<option value=46>Kesselbach</option>
+							<option value=67>Londorf</option>
+							<option value=81>Odenhausen (Lumda)</option>
+							<option value=93>Rüddingshausen</option>
+						</optgroup>
+						<optgroup label="Reiskirchen">
+							<option value=10>Bersrod</option>
+							<option value=15>Burkhardsfelden</option>
+							<option value=24>Ettingshausen</option>
+							<option value=39>Hattenrod</option>
+							<option value=65>Lindenstruth</option>
+							<option value=88>Reiskirchen</option>
+							<option value=96>Saasen</option>
+							<option value=114>Winnerod</option>
+						</optgroup>
+						<optgroup label="Staufenberg">
+							<option value=19>Daubringen</option>
+							<option value=70>Mainzlar</option>
+							<option value=100>Staufenberg</option>
+							<option value=105>Treis an der Lumda</option>
+						</optgroup>
+						<optgroup label="Wettenberg">
+							<option value=52>Krofdorf-Gleiberg</option>
+							<option value=59>Launsbach</option>
+							<option value=115>Wißmar</option>
+						</optgroup>
+					</select>
+					<img class="layout" src="img/c_Coat_001_24.jpg" display="inline-block" name="placeImage" /></img>
+				</p>
+				<p>
+					<label class="field" for="wakeTime">Weckzeit:</label>
+					<input class="layout" type="time" id="wakeTime" name="wakeTime" value="00:00"
+						pattern="[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}" /></input>
+				</p>
+				<p style="display:none;">
+					<label class="field" for="time">Uhrzeit:</label>
+					<input class="layout" type="time" id="time" name="time"
+						pattern="[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}" /></input>
+				</p>
+				<p>
+					<label class="field" for="isClosed">Privater Modus:</label>
+					<input class="layout" type="checkbox" id="isClosed" name="isClosed" /></input>
+				</p>
+				<p style="display:none;">
+					<label class="field" for="isDebug">Debug Modus:</label>
+					<input class="layout" type="checkbox" id="isDebug" name="isDebug" /></input>
+				</p>
+				<p style="display:none;">
+					<label class="field" for="isGiessen">Gießen Modus:</label>
+					<input class="layout" type="checkbox" id="isGiessen" name="isGiessen" /></input>
+				</p>
+			</fieldset>
+			<p>
+				<input class="button" type="submit" value="Speichern"></input>
+				<button class="button" type="button" onclick="transmitConfig()">Zurücksetzen</button>
+				<button class="button" type="button" onclick="transmitConfig()">Übertragen</button>
+			</p>
+		</form>
+	</div>
+	<div id="SonstigesD" class="tabcontent">
+	</div>
+	<iframe name="hidden" href="about:blank" style="display:none"></iframe>
+</body>
+
+</html>
