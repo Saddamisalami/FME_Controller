@@ -16,8 +16,8 @@
 
 MFRC522 mfrc522(RFID_SS_PIN, RFID_RST_PIN);
 
-IPAddress myIP(0, 0, 0, 0);
-IPAddress myAPIP(0, 0, 0, 0);
+IPAddress mesh_ip(0, 0, 0, 0);
+IPAddress local_ip(0, 0, 0, 0);
 
 typedef struct
 {
@@ -92,9 +92,8 @@ void setup()
   mfrc522.PCD_Init();
 
   initMesh();
-  myAPIP = getMeshAPIP();
-  // Serial.println("My AP IP is " + myAPIP.toString());
-
+  local_ip = getMeshAPIP();
+  
   initServer();
 
   struct tm timeinfo;
@@ -125,8 +124,8 @@ void loop()
       }
     }
   }
-  if (myIP != getMeshStationIP())
+  if (mesh_ip != getMeshStationIP())
   {
-    myIP = getMeshStationIP();
+    mesh_ip = getMeshStationIP();
   }
 }

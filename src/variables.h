@@ -46,7 +46,8 @@ extern unsigned int mesh_port;
 extern unsigned int mesh_channel;
 extern boolean mesh_containsRoot;
 extern boolean mesh_isRoot;
-
+extern IPAddress mesh_ip;
+extern IPAddress local_ip;
 /*
  *Globale Variablen für Zeit
  */
