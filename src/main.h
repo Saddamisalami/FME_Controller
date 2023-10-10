@@ -1,18 +1,13 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
-#include <IPAddress.h>
+#include <ESP32Time.h>
 #include <MFRC522.h>
-#include <SPI.h>
+#include <time.h>
 
-#include "alarm\functions.h"
-#include "filesystem\functions.h"
-#include "html\functions.h"
 #include "math\functions.h"
 #include "mesh\functions.h"
-#include "messages\functions.h"
-#include "rfid\functions.h"
+#include "server\functions.h"
 
 #include "variables.h"
 
@@ -68,8 +63,7 @@ String save_nodeIdString = "";
  */
 String rfid_lastUID = "";
 
-void notFound(AsyncWebServerRequest *);
-
+void printLocalTime();
 
 void setup();
 

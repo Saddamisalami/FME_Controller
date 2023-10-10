@@ -244,11 +244,11 @@ void initServer()
             { request->send(SPIFFS, "/img/c_Type_U002_24.jpg", "image/jpg"); });
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(SPIFFS, "/index.html", "text/html"); });
+            { request->send(SPIFFS, "/html/index.html", "text/html"); });
   server.on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(SPIFFS, "/index.html", "text/html"); });
+            { request->send(SPIFFS, "/html/index.html", "text/html"); });
   server.on("/monitor.html", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(SPIFFS, "/monitor.html", "text/html"); });
+            { request->send(SPIFFS, "/html/monitor.html", "text/html"); });
 
   server.on("/getFMEList", HTTP_GET, [](AsyncWebServerRequest *request)
             { request->send(200, "text/html", getNodeTable()); });

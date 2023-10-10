@@ -23,8 +23,10 @@ typedef struct
 {
   unsigned int id;
   unsigned int deviceType;
+  String ipAddress;
   boolean status;
   unsigned int batt;
+  int wlan;
 } MeshDevice;
 
 /*
@@ -83,6 +85,15 @@ const char *ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = 0;
 const int daylightOffset_sec = 3600;
 ESP32Time rtc(daylightOffset_sec);
+void printLocalTime()
+{
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+    return;
+  }
+  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+}
 
 void setup()
 {
@@ -93,15 +104,6 @@ void setup()
 
   initMesh();
   local_ip = getMeshAPIP();
-  
-  initServer();
-
-  struct tm timeinfo;
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  if (getLocalTime(&timeinfo))
-  {
-    rtc.setTimeStruct(timeinfo);
-  }
 }
 
 void loop()
@@ -127,5 +129,13 @@ void loop()
   if (mesh_ip != getMeshStationIP())
   {
     mesh_ip = getMeshStationIP();
+    initServer();
+    struct tm timeinfo;
+    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+    if (getLocalTime(&timeinfo))
+    {
+      rtc.setTimeStruct(timeinfo);
+    }
+    printLocalTime();
   }
 }
