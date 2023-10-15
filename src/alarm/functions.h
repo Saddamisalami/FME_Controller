@@ -7,8 +7,19 @@
 String getAlarmPLZText(unsigned int);
 String getAlarmCityText(unsigned int);
 String getAlarmStreetText(unsigned int);
+
+
+
+
 String getAlarmSubText(unsigned int);
+String getAlarmTypeText_DE_HE(unsigned int);
 String getAlarmTypeText(unsigned int);
+
+
+
+
+
+
 String getAlarmCategoryText(unsigned int);
 int getAlarmCategory(unsigned int);
 String getCombinedAdress(int, int, int, int, String);

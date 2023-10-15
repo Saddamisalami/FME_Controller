@@ -115,10 +115,10 @@
 			border-left: none;
 		}
 	</style>
-	<script src="js/jquery.js"></script>
-	<script src="js/adresse.js"></script>
-	<script src="js/einstellungen.js"></script>
-	<script src="js/alarm.js"></script>
+	<script src="../js/jquery.js"></script>
+	<script src="../js/adresse.js"></script>
+	<script src="../js/einstellungen.js"></script>
+	<script src="../js/alarm.js"></script>
 
 	<script>
 		$(document).ready(function () {
@@ -166,10 +166,13 @@
 			var currentCity = document.getElementById('currentCity').value;
 			var currentStreet = document.getElementById('currentStreet').value;
 			var currentHouseNumber = document.getElementById('currentHouseNumber').value;
-			var currentHouseAdddition = document.getElementById('currentHouseAdddition').value;
-			var currentAddress = document.getElementById('currentAddress').value;
+			var currentHouseAddition = document.getElementById('currentHouseAddition').value;
+			var currentAddress = document.getElementById('currentPLZ').options[document.getElementById('currentPLZ').selectedIndex].value & " " &
+				document.getElementById('currentCity').options[document.getElementById('currentCity').selectedIndex].value & ", " &
+				document.getElementById('currentStreet').options[document.getElementById('currentStreet').selectedIndex].value & " " &
+				document.getElementById('currentHouseNumber').value + document.getElementById('currentHouseAddition').value;
 			var currentComment = document.getElementById('currentComment').value;
-			var link = 'http://controller/saveAlarm?currentType=' + currentType + 'currentSub=' + currentSub + 'currentPLZ=' + currentPLZ + 'currentCity=' + currentCity + 'currentStreet=' + currentStreet + 'currentHouseNumber=' + currentHouseNumber + 'currentHouseAddition=' + currentHouseAddition + '&currentAddress=' + currentAddress + '&currentComment=' + currentComment + '&nodeId=' + nodeId;
+			var link = 'http://controller/saveAlarm?currentType=' + currentType + '&currentSub=' + currentSub + '&currentPLZ=' + currentPLZ + '&currentCity=' + currentCity + '&currentStreet=' + currentStreet + '&currentHouseNumber=' + currentHouseNumber + '&currentHouseAddition=' + currentHouseAddition + '&currentAddress=' + currentAddress + '&currentComment=' + currentComment + '&nodeId=' + nodeId;
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
@@ -187,10 +190,13 @@
 			var currentCity = document.getElementById('currentCity').value;
 			var currentStreet = document.getElementById('currentStreet').value;
 			var currentHouseNumber = document.getElementById('currentHouseNumber').value;
-			var currentHouseAdddition = document.getElementById('currentHouseAdddition').value;
-			var currentAddress = document.getElementById('currentAddress').value;
+			var currentHouseAddition = document.getElementById('currentHouseAddition').value;
+			var currentAddress = document.getElementById('currentPLZ').options[document.getElementById('currentPLZ').selectedIndex].value & " " &
+				document.getElementById('currentCity').options[document.getElementById('currentCity').selectedIndex].value & ", " &
+				document.getElementById('currentStreet').options[document.getElementById('currentStreet').selectedIndex].value & " " &
+				document.getElementById('currentHouseNumber').value + document.getElementById('currentHouseAddition').value;
 			var currentComment = document.getElementById('currentComment').value;
-			var link = 'http://controller/sendAlarm?currentType=' + currentType + 'currentSub=' + currentSub + 'currentPLZ=' + currentPLZ + 'currentCity=' + currentCity + 'currentStreet=' + currentStreet + 'currentHouseNumber=' + currentHouseNumber + 'currentHouseAddition=' + currentHouseAddition + '&currentAddress=' + currentAddress + '&currentComment=' + currentComment + '&nodeId=' + nodeId;
+			var link = 'http://controller/sendAlarm?currentType=' + currentType + '&currentSub=' + currentSub + '&currentPLZ=' + currentPLZ + '&currentCity=' + currentCity + '&currentStreet=' + currentStreet + '&currentHouseNumber=' + currentHouseNumber + '&currentHouseAddition=' + currentHouseAddition + '&currentAddress=' + currentAddress + '&currentComment=' + currentComment + '&nodeId=' + nodeId;
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
@@ -207,6 +213,7 @@
 		<button class="tablinks" onclick="openTab(event, 'StatusD')">Status</button>
 		<button class="tablinks" onclick="openTab(event, 'AlarmD')">Alarm</button>
 		<button class="tablinks" onclick="openTab(event, 'EinstellungenD')">Einstellungen</button>
+		<button class="tablinks" onclick="openTab(event, 'FahrzeugeD')">Fahrzeuge</button>
 	</div>
 	<div id="StatusD" class="tabcontent">
 		<table class="grayTable">
@@ -219,73 +226,6 @@
 				</tr>
 			</thead>
 			<tbody id="insertFMEList">
-				<!--Das ist nur für Testzwecke alles zwischen <tbody id="insertFMEList"> und </tbody> muss entfernt werden-->
-				<tr>
-					<td>123456789</td>
-					<td>
-						<img class="layout" src="img/c_Device_Controller.jpg" alt="Controller" title="Controller"
-							display="inline-block" name="statusImage" /></img>
-					</td>
-					<td>
-						<img class="layout" src="img/c_Status_On.jpg" alt="Online" title="Online" display="inline-block"
-							name="statusImage" /></img>
-						<img class="layout" src="img/c_BatCharge_24.jpg" alt="100%" title="100%" display="inline-block"
-							name="battImage" /></img>
-					</td>
-					<td>
-						<button type="button" onclick=resetFME(123456789)>Neustart</button>
-					</td>
-				</tr>
-				<tr>
-					<td>987654321</td>
-					<td>
-						<img class="layout" src="img/c_Device_Bridge.jpg" alt="Bridge" title="Bridge"
-							display="inline-block" name="statusImage" /></img>
-					</td>
-					<td>
-						<img class="layout" src="img/c_Status_On.jpg" alt="Online" title="Online" display="inline-block"
-							name="statusImage" /></img>
-						<img class="layout" src="img/c_Bat100_24.jpg" alt="100%" title="100%" display="inline-block"
-							name="battImage" /></img>
-					</td>
-					<td>
-						<button type="button" onclick=resetFME(987654321)>Neustart</button>
-					</td>
-				</tr>
-				<tr>
-					<td>987654321</td>
-					<td>
-						<img class="layout" src="img/c_Device_FME.jpg" alt="Client" title="Client"
-							display="inline-block" name="statusImage" /></img>
-					</td>
-					<td>
-						<img class="layout" src="img/c_Status_On.jpg" alt="Online" title="Online" display="inline-block"
-							name="statusImage" /></img>
-						<img class="layout" src="img/c_Bat100_24.jpg" alt="100%" title="100%" display="inline-block"
-							name="battImage" /></img>
-					</td>
-					<td>
-						<button type="button" onclick=resetFME(987654321)>Neustart</button>
-						<button type="button" onclick=sendSingle(987654321)>Alarmieren</button>
-					</td>
-				</tr>
-				<tr>
-					<td>987654321</td>
-					<td>
-						<img class="layout" src="img/c_Device_FME.jpg" alt="Client" title="Client"
-							display="inline-block" name="statusImage" /></img>
-					</td>
-					<td>
-						<img class="layout" src="img/c_Status_Off.jpg" alt="Offline" title="Offline"
-							display="inline-block" name="statusImage" /></img>
-						<img class="layout" src="img/c_Bat000_24.jpg" alt="0%" title="0%" display="inline-block"
-							name="battImage" /></img>
-					</td>
-					<td>
-						<button type="button" disabled="disabled" onclick=resetFME(987654321)>Neustart</button>
-						<button type="button" disabled="disabled" onclick=sendSingle(987654321)>Alarmieren</button>
-					</td>
-				</tr>
 			</tbody>
 		</table>
 		<p>
@@ -397,7 +337,7 @@
 							<option value=1>FME Test</option>
 						</optgroup>
 					</select>
-					<img class="layout" src="img/c_Type_F001_24.jpg" display="inline-block" name="typeImage" /></img>
+					<img class="layout" src="../img/c_Type_F001_24.jpg" display="inline-block" name="typeImage" /></img>
 				</p>
 				<p>
 					<label class="field" for="currentSub">Unterpunkt:</label>
@@ -469,7 +409,7 @@
 							<option value=13>35435</option>
 						</optgroup>
 					</select>
-					<img class="layout" src="img/c_Coat_000_24.jpg" display="inline-block" name="cityImage" /></img>
+					<img class="layout" src="../img/c_Coat_000_24.jpg" display="inline-block" name="cityImage" /></img>
 				</p>
 				<p>
 					<label class="field" for="currentCity">Ort:</label>
@@ -485,8 +425,8 @@
 						max="999" value="1" /></input>
 				</p>
 				<p>
-					<label class="field" for="currentHouseAdddition">Zusatz:</label>
-					<input class="layout" type="text" id="currentHouseAdddition" name="currentHouseAdddition"
+					<label class="field" for="currentHouseAddition">Zusatz:</label>
+					<input class="layout" type="text" id="currentHouseAddition" name="currentHouseAddition"
 						pattern="[A-Za-z]{0,3}" /></input>
 				</p>
 				<p hidden>
@@ -542,7 +482,7 @@
 						<option value="blackwhite">Schwarz/Weiß</option>
 						<option value="outline">Outline</option>
 					</select>
-					<img class="layout" src="img/Theme_24.jpg" display="inline-block" name="themeImage" /></img>
+					<img class="layout" src="../img/Theme_24.jpg" display="inline-block" name="themeImage" /></img>
 				</p>
 				<p>
 					<label class="field" id="brightnessLabel" for="toneAnalog">Helligkeit:</label>
@@ -580,7 +520,8 @@
 						<option value="de">Deutsch</option>
 						<option value="en">Englisch</option>
 					</select>
-					<img class="layout" src="img/c_LangDE_24.jpg" display="inline-block" name="languageImage" /></img>
+					<img class="layout" src="../img/c_LangDE_24.jpg" display="inline-block"
+						name="languageImage" /></img>
 				</p>
 				<p>
 					<label class="field" for="currentPlace">Standort:</label>
@@ -729,7 +670,7 @@
 							<option value=115>Wißmar</option>
 						</optgroup>
 					</select>
-					<img class="layout" src="img/c_Coat_001_24.jpg" display="inline-block" name="placeImage" /></img>
+					<img class="layout" src="../img/c_Coat_001_24.jpg" display="inline-block" name="placeImage" /></img>
 				</p>
 				<p>
 					<label class="field" for="wakeTime">Weckzeit:</label>
@@ -761,7 +702,284 @@
 			</p>
 		</form>
 	</div>
-	<div id="SonstigesD" class="tabcontent">
+	<div id="FahrzeugeD" class="tabcontent">
+		<form id="fahrzeuge" action="send" target="hidden">
+			<fieldset>
+				<legend>Fahrzeug hinzufügen</legend>
+				<p>
+					<label class="field" for="car_name">Funkrufname:</label>
+					<input class="layout" type='text' id='car_name' name='car_name' /></input>
+				</p>
+				<p>
+					<label class="field" for="car_type">Fahrzeugtyp:</label>
+					<select class="layout" id="car_type" name="car_type" required>
+						<optgroup label="Deutschland">
+							<optgroup label="Einsatzleitwagen">
+								<option value=1001>KdoW</option>
+								<option value=1002>ELW 1</option>
+								<option value=1003>ELW 2</option>
+								<option style='font-style: italic;' value=1004>ELW 3</option>
+								<option style='font-style: italic;' value=1005>FmKw</option>
+								<option style='font-style: italic;' value=1006>FeKW</option>
+								<option style='font-style: italic;' value=1007>FüKW</option>
+								<option style='font-style: italic;' value=1008>FüKomKW</option>
+								<option style='font-style: italic;' value=1009>FuKW</option>
+								<option style='font-style: italic;' value=1010>FuTrKW</option>
+								<option style='font-style: italic;' value=1011>ZTrKW</option>
+							</optgroup>
+							<optgroup label="Drehleitern">
+								<option value=1101>DLA(K) 23/12</option>
+								<option value=1102>DLA(K) 18/12</option>
+								<option value=1103>DLA(K) 12/9</option>
+							</optgroup>
+							<optgroup label="Löschfahrzeuge">
+								<option value=1201>LF</option>
+								<option value=1202>TSF</option>
+								<option style='font-style: italic;' value=1203>TSF-L</option>
+								<option value=1204>TSF-W</option>
+								<option style='font-style: italic;' value=1205>KEF</option>
+								<option value=1206>KLF</option>
+								<option value=1207>MLF</option>
+								<option style='font-style: italic;' value=1208>LF 8</option>
+								<option style='font-style: italic;' value=1209>LF 8/6</option>
+								<option value=1210>LF 10</option>
+								<option style='font-style: italic;' value=1211>LF 10/6</option>
+								<option style='font-style: italic;' value=1212>LF 16</option>
+								<option style='font-style: italic;' value=1213>LF 16/12</option>
+								<option style='font-style: italic;' value=1214>LF 16-TS</option>
+								<option value=1215>LF 20</option>
+								<option value=1216>LF 20 KatS</option>
+								<option style='font-style: italic;' value=1217>LF 20/16</option>
+								<option style='font-style: italic;' value=1218>LF 24</option>
+								<option style="text-decoration:line-through;" value=1219>SLF</option>
+							</optgroup>
+							<optgroup label="Hilfeleistungslöschfahrzeuge">
+								<option value=1301>HLF</option>
+								<option value=1302>HLF 10</option>
+								<option style='font-style: italic;' value=1303>HLF 10/6</option>
+								<option value=1304>HLF 20</option>
+								<option style='font-style: italic;' value=1305>HLF 20/16</option>
+								<option style='font-style: italic;' value=1306>HLF 24/14-S</option>
+							</optgroup>
+							<optgroup label="Tanklöschfahrzeug">
+								<option style='font-style: italic;' value=1401>GTLF</option>
+								<option style='font-style: italic;' value=1402>StLF</option>
+								<option style='font-style: italic;' value=1403>StLF 20/25</option>
+								<option style='font-style: italic;' value=1404>StLF 20-V</option>
+								<option style='font-style: italic;' value=1405>TLF</option>
+								<option value=1406>TLF 2000</option>
+								<option value=1407>TLF 3000</option>
+								<option value=1408>TLF 4000</option>
+								<option style='font-style: italic;' value=1409>TLF 8 W</option>
+								<option style='font-style: italic;' value=1410>TLF 8/8</option>
+								<option style='font-style: italic;' value=1411>TLF 8/18</option>
+								<option style='font-style: italic;' value=1412>TLF 16/24-Tr</option>
+								<option style='font-style: italic;' value=1413>TLF 16/25</option>
+								<option style='font-style: italic;' value=1414>TLF 16/45</option>
+								<option style='font-style: italic;' value=1415>TLF 20/40</option>
+								<option style='font-style: italic;' value=1416>TLF 20/40-SL</option>
+								<option style='font-style: italic;' value=1417>TLF 24/50</option>
+							</optgroup>
+							<optgroup label="Trockenlöschfahrzeug">
+								<option style='font-style: italic;' value=1501>PLF</option>
+								<option style='font-style: italic;' value=1502>TroLF 500</option>
+								<option style='font-style: italic;' value=1503>TroLF 750</option>
+								<option style='font-style: italic;' value=1504>TroLF 1500</option>
+								<option style='font-style: italic;' value=1505>TroLF 2000</option>
+								<option style='font-style: italic;' value=1506>TroLF 3000</option>
+								<option style='font-style: italic;' value=1507>TroLF 3000-St</option>
+								<option style='font-style: italic;' value=1508>TroLF 4000</option>
+								<option style='font-style: italic;' value=1509>TroTLF 16</option>
+								<option style='font-style: italic;' value=1510>TroWa</option>
+							</optgroup>
+							<optgroup label="Schlauchwagen">
+								<option style='font-style: italic;' value=1601>SKW</option>
+								<option style='font-style: italic;' value=1602>SW 1000</option>
+								<option style='font-style: italic;' value=1603>SW 2000</option>
+								<option style='font-style: italic;' value=1604>SW 2000-Tr</option>
+								<option style='font-style: italic;' value=1605>SW KatS</option>
+							</optgroup>
+							<optgroup label="Mannschaftsfahrzeuge">
+								<option value=1701>MTF/MTW/GruKw</option>
+								<option value=1702>MZF</option>
+								<option value=1703>MTF-L</option>
+							</optgroup>
+							<optgroup label="Gerätewagen">
+								<option value=1801>GW</option>
+								<option value=1802>GW-G</option>
+								<option value=1803>GW-L1</option>
+								<option value=1804>GW-L2</option>
+								<option style='font-style: italic;' value=1805>GW-G1</option>
+								<option style='font-style: italic;' value=1806>GW-G2</option>
+								<option style='font-style: italic;' value=1807>GW-G3</option>
+								<option style='font-style: italic;' value=1808>GW-Öl</option>
+								<option style='font-style: italic;' value=1809>GW-G1</option>
+								<option style='font-style: italic;' value=1810>GW-G1</option>
+								<option style='font-style: italic;' value=1811>GW-TS</option>
+							</optgroup>
+							<optgroup label="Rüstwagen">
+								<option value=1901>RW</option>
+								<option value=1902>RW 1</option>
+								<option value=1903>RW 2</option>
+								<option style='font-style: italic;' value=1904>RW 3</option>
+							</optgroup>
+							<optgroup label="Feuerwehrboote">
+								<option value=2001>MZB</option>
+								<option style='font-style: italic;' value=2002>FLB</option>
+								<option style='font-style: italic;' value=2003>HLB</option>
+								<option value=2004>RTB1</option>
+								<option value=2005>RTB2</option>
+							</optgroup>
+							<optgroup label="Feuerwehranhänger">
+								<option value=2101>MZA</option>
+								<option value=2102>STA</option>
+								<option value=2103>TSA</option>
+								<option value=2104>FwA-SWW</option>
+								<option value=2105>ÖSA</option>
+								<option value=2106>FwA-Lima</option>
+								<option style='font-style: italic;' value=2107>AL</option>
+								<option value=2108>VSA</option>
+								<option value=2109>FKH</option>
+							</optgroup>
+							<optgroup label="Teleskopmasten">
+								<option value=2201>TGM</option>
+								<option value=2202>TGM 32</option>
+								<option value=2203>TM</option>
+								<option value=2204>TM 50</option>
+								<option value=2205>TM 52</option>
+								<option value=2206>TMF</option>
+								<option value=2207>TMF 53</option>
+							</optgroup>
+							<optgroup label="Sonstige">
+								<option value=2301>HAB</option>
+								<option value=2302>FLF</option>
+								<option value=2303>FwK</option>
+								<option value=2304>LP</option>
+								<option value=2305>LUF</option>
+								<option value=2306>RTF</option>
+								<option value=2307>TULF</option>
+								<option style='font-style: italic;' value=2308>VEF</option>
+							</optgroup>
+							<optgroup label="Abrollbehälter">
+								<option value=2401>Betreuung / Aufenthalt</option>
+								<option value=2402>Dekontamination</option>
+								<option value=2403>Einsatzleitung</option>
+								<option value=2404>Hochwasser</option>
+								<option value=2405>Logistik</option>
+								<option value=2406>MANV</option>
+								<option value=2407>Mulde</option>
+								<option value=2408>Rüst</option>
+								<option value=2409>Schlauch</option>
+								<option value=2410>Umweltschutz/Strahlenschutz/Gefahrgut</option>
+								<option value=2411>Wasser/Schaum</option>
+								<option value=2412>Küche</option>
+							</optgroup>
+						</optgroup>
+						<optgroup label="Österreich">
+							<optgroup label="Löschfahrzeuge">
+								<option value=3101>KLF</option>
+								<option value=3102>KLF-W</option>
+								<option value=3103>LF-W</option>
+								<option value=3104>TSA</option>
+								<option value=3105>LF</option>
+								<option value=3106>SLF</option>
+								<option value=3107>TLF</option>
+								<option value=3108>GTLF</option>
+								<option value=3109>HLF</option>
+								<option value=3110>ULF</option>
+								<option value=3111>FLF</option>
+								<option value=3112>LLF</option>
+							</optgroup>
+							<optgroup label="Rüstfahrzeuge">
+								<option value=3201>KRF</option>
+								<option value=3202>KRF-B</option>
+								<option value=3203>VRF</option>
+								<option value=3204>KRF-S</option>
+								<option value=3205>KRF-E</option>
+								<option value=3206>RF</option>
+								<option value=3207>SRF</option>
+								<option value=3208>RLF</option>
+								<option value=3209>HLF</option>
+							</optgroup>
+							<optgroup label="Sonstige Fahrzeuge">
+								<option value=3301>MTF</option>
+								<option value=3302>KDOF</option>
+								<option value=3303>ELF</option>
+								<option value=3304>KDTF</option>
+								<option value=3305>KRAD</option>
+								<option value=3306>VF</option>
+								<option value=3307>LAST</option>
+								<option value=3308>TF</option>
+								<option value=3309>MZF</option>
+								<option value=3310>BLF</option>
+								<option value=3311>WLF</option>
+								<option value=3312>WLA</option>
+								<option value=33130>WLK</option>
+							</optgroup>
+							<optgroup label="Stützpunktfahrzeuge">
+								<option value=3401>KF</option>
+								<option value=3402>DL</option>
+								<option value=3403>DLK</option>
+								<option value=3404>ASF</option>
+								<option value=3405>ATF</option>
+								<option value=3406>ALF</option>
+								<option value=3407>TMB</option>
+								<option value=3408>Steig</option>
+								<option value=3409>TLK</option>
+								<option value=3410>GB</option>
+								<option value=3411>SSTF</option>
+								<option value=3412>SSF</option>
+								<option value=3413>GSF</option>
+								<option value=3414>GGF</option>
+								<option value=3415>KÖF</option>
+								<option value=3416>KSF</option>
+								<option value=3417>ÖF</option>
+								<option value=3418>OEF</option>
+								<option value=3419>RLF-T</option>
+								<option value=3420>TF</option>
+								<option value=3421>TEF</option>
+								<option value=3422>TDF</option>
+							</optgroup>
+							<optgroup label="Berufsfeuerwehr Wien">
+								<option value=3001>IMF</option>
+								<option value=3002>IRF</option>
+								<option value=3003>RHF</option>
+								<option value=3004>ASL</option>
+								<option value=3005>ASP</option>
+								<option value=3006>WSF</option>
+							</optgroup>
+							<optgroup label="Berufsfeuerwehr Graz">
+								<option value=3007>HÖRG</option>
+								<option value=3008>KAF</option>
+								<option value=3009>NF</option>
+								<option value=3010>TIF</option>
+								<option value=3011>SBF</option>
+							</optgroup>
+							<optgroup label="Berufsfeuerwehr Linz">
+								<option value=3012>SICHF</option>
+								<option value=3013>KUF</option>
+							</optgroup>
+							<optgroup label="Berufsfeuerwehr Innsbruck">
+								<option value=3014>WAF</option>
+								<option value=3015>FLIEGE</option>
+							</optgroup>
+							<optgroup label="Berufsfeuerwehr Salzburg">
+								<option value=3016>SMF</option>
+								<option value=3017>SF</option>
+								<option value=3018>WDF</option>
+								<option value=3019>HLF</option>
+							</optgroup>
+							<optgroup label="Berufsfeuerwehr Klagenfurt">
+								<option value=3020>WIF</option>
+								<option value=3021>MZF</option>
+								<option value=3022>TON</option>
+							</optgroup>
+						</optgroup>
+					</select>
+					<!--<img class="layout" src="../img/fw/Gerätewagen_Logistik_2.jpg" display="inline-block" name="carImage" /></img>-->
+				</p>
+			</fieldset>
+		</form>
 	</div>
 	<iframe name="hidden" href="about:blank" style="display:none"></iframe>
 </body>
